@@ -37,6 +37,12 @@ A self-built enterprise-style home lab on Proxmox VE designed for hands-on learn
 - Defined 20-lab build order from beginner to advanced
 - Established GitHub portfolio structure
 
+### Evidence
+- [VM Inventory](Phase1-Evidence/vm-inventory.md)
+- [Network Zone Configuration](Phase1-Evidence/network-zones.md)
+- [Storage & Resources](Phase1-Evidence/storage-and-resources.md)
+- [New VMs Created](Phase1-Evidence/new-vms-created.md)
+
 ## Planned Labs
 
 1. Active Directory — DC, DNS, users, groups, OUs, GPOs
