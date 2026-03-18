@@ -42,6 +42,8 @@ A self-built enterprise-style home lab on Proxmox VE designed for hands-on learn
 - [Network Zone Configuration](Phase1-Evidence/network-zones.md)
 - [Storage & Resources](Phase1-Evidence/storage-and-resources.md)
 - [New VMs Created](Phase1-Evidence/new-vms-created.md)
+- [Wazuh SIEM Assessment](Phase1-Evidence/vm-assessment-wazuh.md) — Full stack confirmed (Manager + Indexer + Dashboard v4.7.5)
+- [Active Directory Assessment](Phase1-Evidence/vm-assessment-ad.md) — Clean Windows Server, AD not yet installed
 
 ## Planned Labs
 
