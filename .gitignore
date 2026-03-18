@@ -1,0 +1,23 @@
+# Secrets and credentials
+*.env
+credentials*
+*password*
+*secret*
+*.key
+*.pem
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Large files
+*.iso
+*.ova
+*.vmdk
