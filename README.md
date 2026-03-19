@@ -48,6 +48,11 @@ A self-built enterprise-style home lab on Proxmox VE designed for hands-on learn
 - [Wazuh SIEM Assessment](Phase1-Evidence/vm-assessment-wazuh.md) — Full stack confirmed (Manager + Indexer + Dashboard v4.7.5)
 - [Active Directory Assessment](Phase1-Evidence/vm-assessment-ad.md) — Clean Windows Server, AD not yet installed
 - [Security Audit](Phase1-Evidence/security-audit.md) — Infrastructure audit, firewall remediation, hardening roadmap
+- [Skills-to-Jobs Matrix](Phase1-Evidence/skills-to-jobs-matrix.md) — Every lab mapped to job requirements and certifications
+- [MITRE ATT&CK Coverage](Phase1-Evidence/mitre-attack-coverage.md) — 20+ techniques across 10 tactics with detection sources
+- [Lab Roadmap](Phase1-Evidence/lab-roadmap.md) — 20-lab build order with dependencies and phasing
+- [Lessons Learned](Phase1-Evidence/lessons-learned.md) — What broke, how it was fixed, key decisions
+- [Cost Analysis](Phase1-Evidence/cost-analysis.md) — Homelab vs AWS/Azure: 95% savings over 3 years
 
 ## Planned Labs
 
