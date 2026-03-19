@@ -39,11 +39,15 @@ A self-built enterprise-style home lab on Proxmox VE designed for hands-on learn
 
 ### Evidence
 - [VM Inventory](Phase1-Evidence/vm-inventory.md)
+- [Full VM Configurations](Phase1-Evidence/full-vm-configs.md) — All 12 VMs with specs, roles, and status
 - [Network Zone Configuration](Phase1-Evidence/network-zones.md)
+- [Network Architecture Diagram](Phase1-Evidence/network-diagram.md) — Visual topology with firewall policy
+- [IP Address Plan](Phase1-Evidence/ip-address-plan.md) — Static IP assignments and DNS strategy
 - [Storage & Resources](Phase1-Evidence/storage-and-resources.md)
 - [New VMs Created](Phase1-Evidence/new-vms-created.md)
 - [Wazuh SIEM Assessment](Phase1-Evidence/vm-assessment-wazuh.md) — Full stack confirmed (Manager + Indexer + Dashboard v4.7.5)
 - [Active Directory Assessment](Phase1-Evidence/vm-assessment-ad.md) — Clean Windows Server, AD not yet installed
+- [Security Audit](Phase1-Evidence/security-audit.md) — Infrastructure audit, firewall remediation, hardening roadmap
 
 ## Planned Labs
 
