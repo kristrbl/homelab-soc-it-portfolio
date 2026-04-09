@@ -28,8 +28,8 @@ Live tracker for all portfolio projects. Updated as labs are completed.
 | # | Project | Status | Notes |
 |---|---|---|---|
 | 01 | Wazuh SIEM Setup & Alert Investigation | 🔧 In Progress | Wazuh server deployed |
-| 02 | Log Analysis Lab | 📋 Planned | — |
-| 03 | Brute Force Detection Scenario | 📋 Planned | Will use Wazuh + Windows agent |
+| 02 | Log Analysis Lab (Splunk) | 🔧 In Progress | Splunk VM deployed, building SPL queries |
+| 03 | Brute Force Detection Scenario | 🔧 In Progress | Kali attacker VM → Windows target → Wazuh detection pipeline |
 | 04 | Phishing Investigation Workflow | 📋 Planned | — |
 | 05 | Vulnerability Scanning (Nessus Essentials) | 📋 Planned | — |
 | 06 | Windows Event Log Investigation | 📋 Planned | — |

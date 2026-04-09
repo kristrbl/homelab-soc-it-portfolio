@@ -21,8 +21,11 @@ Linux servers are everywhere — web servers, databases, SIEM backends, cloud in
 
 | Component | Details |
 |---|---|
-| Linux Server | Ubuntu Server 22.04 VM |
-| Access | SSH from host or another VM |
+| Hypervisor | Proxmox VE — gw-nexus |
+| Linux Server | Ubuntu Server — Corporate zone (vmbr2) |
+| Wazuh Agent | Installed — logs forwarded to Wazuh SIEM |
+| Attacker | Kali Linux — Attacker zone (vmbr3), SSH attempts simulated |
+| Access | SSH from Windows workstation or direct console |
 | Log location | `/var/log/auth.log` |
 
 ---

@@ -23,11 +23,13 @@ SIEM tools are the primary platform for SOC work. Wazuh is open-source, widely d
 
 | Component | Details |
 |---|---|
-| Hypervisor | Proxmox VE |
-| Wazuh Server | Ubuntu Server 22.04 — VM (4 vCPU, 8 GB RAM) |
-| Windows Agent | Windows 10 VM joined to `corp.local` |
-| Linux Agent | Ubuntu Server VM |
-| Network | SOC subnet — 10.10.10.0/24 |
+| Hypervisor | Proxmox VE — gw-nexus |
+| Wazuh Server | Dedicated Linux VM — 8 GB RAM, SOC zone (vmbr1) |
+| Windows Agent | Windows 11 workstation — domain-joined to `axiom.local` |
+| Windows Agent 2 | Windows 10 workstation — second domain endpoint |
+| Linux Agent | Ubuntu Server — corporate zone (vmbr2) |
+| Domain Controller | Windows Server 2025 — `AXIOM-POLARIS` |
+| Network | SOC zone (vmbr1) monitors Corporate zone (vmbr2) |
 | Wazuh Version | 4.x (current) |
 
 ---

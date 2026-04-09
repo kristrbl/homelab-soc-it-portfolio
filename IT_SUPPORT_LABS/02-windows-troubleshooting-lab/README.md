@@ -23,10 +23,11 @@ Help desk and IT support roles are built on Windows troubleshooting. Every inter
 
 | Component | Details |
 |---|---|
-| Hypervisor | Proxmox VE |
-| Endpoint | Windows 10 VM |
-| Domain | `corp.local` (from AD lab) |
-| Network | Internal subnet — 10.10.20.0/24 |
+| Hypervisor | Proxmox VE — gw-nexus |
+| Primary Endpoint | Windows 11 workstation — domain-joined to `axiom.local` |
+| Secondary Endpoint | Windows 10 workstation — second domain endpoint |
+| Domain Controller | Windows Server 2025 — `AXIOM-POLARIS` |
+| Network | Corporate zone — vmbr2 |
 
 ---
 

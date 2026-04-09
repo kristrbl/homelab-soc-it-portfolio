@@ -21,9 +21,12 @@ User provisioning and deprovisioning is one of the highest-volume tasks in IT su
 
 | Component | Details |
 |---|---|
-| Domain Controller | Windows Server 2022 — `corp.local` |
-| Client | Windows 10 VM |
-| Tools | ADUC, PowerShell, Group Policy |
+| Hypervisor | Proxmox VE — gw-nexus |
+| Domain Controller | Windows Server 2025 — `AXIOM-POLARIS.axiom.local` |
+| Endpoint 1 | Windows 11 workstation — domain-joined |
+| Endpoint 2 | Windows 10 workstation — domain-joined |
+| Network | Corporate zone — vmbr2 |
+| Tools | ADUC, PowerShell, Group Policy Management Console |
 
 ---
 

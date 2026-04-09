@@ -23,10 +23,13 @@ Brute force against login interfaces is one of the most common alerts a tier-1 a
 
 | Component | Details |
 |---|---|
-| Wazuh Server | Ubuntu — 10.10.10.10 |
-| Target (Windows) | Windows 10 VM — 10.10.20.20 |
-| Attacker simulation | Hydra or manual failed login loop from Linux VM |
-| Network | Isolated internal lab — no internet exposure |
+| Hypervisor | Proxmox VE — gw-nexus |
+| Wazuh SIEM | Dedicated Linux VM — SOC zone (vmbr1) |
+| Target — Windows | Windows 11 workstation — Corporate zone (vmbr2) |
+| Target — Linux | Ubuntu Server — Corporate zone (vmbr2) |
+| Attacker | Kali Linux — isolated Attacker zone (vmbr3) |
+| Firewall | Inter-zone firewall VM — logs all cross-zone traffic |
+| Network | Attack zone (vmbr3) → Corporate zone (vmbr2), monitored by SOC zone (vmbr1) |
 
 ---
 
