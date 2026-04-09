@@ -1,14 +1,19 @@
-# Secrets and credentials
+# Credentials and secrets — never commit these
 *.env
 credentials*
 *password*
 *secret*
 *.key
 *.pem
+*.pfx
+*.p12
+id_rsa
+id_rsa.pub
 
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Editor files
 *.swp
@@ -17,7 +22,18 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Large files
+# Large binary files — store externally if needed
 *.iso
 *.ova
 *.vmdk
+*.vhd
+*.qcow2
+
+# Screenshots with sensitive data — review before committing
+# Remove this line when you've verified screenshots are clean
+# SCREENSHOTS/
+
+# Temp files
+*.tmp
+*.log
+*.bak
