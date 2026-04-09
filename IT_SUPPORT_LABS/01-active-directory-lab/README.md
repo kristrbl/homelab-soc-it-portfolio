@@ -1,21 +1,21 @@
 # Active Directory Home Lab
 
 **Track:** IT Support | Systems Administration | Help Desk
-**Status:** 🔧 In Progress
+**Status:** ✅ Complete
 
 ---
 
 ## Scenario
 
-A small company is setting up a Windows domain environment for the first time. As the IT technician, you are responsible for deploying and configuring a domain controller, building an organizational structure that reflects the business, creating user accounts for all employees, applying Group Policy to manage desktop settings, and verifying that users can log in and access appropriate resources.
+A small company is setting up a Windows domain environment for the first time. As the IT technician, I deployed and configured a domain controller, built an organizational structure that reflects the business, created user accounts, configured security groups, applied Group Policy baselines, and verified DNS resolution — all from scratch in a homelab environment.
 
-This lab simulates the full setup and ongoing administration that an IT support tech or junior sysadmin would handle in a real SMB environment.
+This lab simulates the full setup and ongoing administration that an IT support tech or junior sysadmin handles in a real SMB environment.
 
 ---
 
 ## Why This Matters for an IT Role
 
-Active Directory is the backbone of Windows enterprise environments. Nearly every IT support, help desk, and sysadmin role involves AD in some capacity — resetting passwords, unlocking accounts, creating new users, troubleshooting login failures, or applying GPOs. Being able to build it from scratch and administer it shows you understand how it works, not just how to click through it.
+Active Directory is the backbone of Windows enterprise environments. Nearly every IT support, help desk, and sysadmin role involves AD daily — resetting passwords, unlocking accounts, provisioning new users, troubleshooting login failures, applying GPOs. Building it from scratch shows you understand how it works, not just how to click through it.
 
 ---
 
@@ -23,184 +23,152 @@ Active Directory is the backbone of Windows enterprise environments. Nearly ever
 
 | Component | Details |
 |---|---|
-| Hypervisor | Proxmox VE (home lab) |
-| Domain Controller | Windows Server 2022 — VM |
-| Client Machine | Windows 10 — VM |
-| Network | Isolated internal subnet (10.10.20.0/24) |
-| Domain | `corp.local` |
+| Hypervisor | Proxmox VE (homelab) |
+| Domain Controller | Windows Server 2025 — `AXIOM-POLARIS` |
+| Domain | `axiom.local` |
+| Network | Isolated internal subnet — 10.10.20.0/24 |
+| DC IP | 10.10.20.10 |
 
 ---
 
 ## Tools Used
 
-- Windows Server 2022
+- Windows Server 2025
 - Active Directory Domain Services (AD DS)
-- DNS Server (installed with AD DS)
-- Active Directory Users and Computers (ADUC)
+- DNS Server (integrated with AD DS)
+- PowerShell (all configuration done via command line)
 - Group Policy Management Console (GPMC)
-- PowerShell
-- Windows 10 client VM
 
 ---
 
-## Implementation
+## What Was Built
 
-### Phase 1 — Deploy the Domain Controller
+### Domain & Domain Controller
 
-1. Install Windows Server 2022 on a VM (set static IP, rename machine to `DC01`)
-2. Install the AD DS role via Server Manager → Add Roles and Features
-3. Promote to domain controller — create new forest: `corp.local`
-4. Set DSRM password, configure DNS, complete promotion and reboot
-5. Verify AD DS and DNS services are running
-6. Confirm DNS forward lookup zone exists for `corp.local`
+Promoted `AXIOM-POLARIS` as the domain controller for `axiom.local`. Installed AD DS and DNS roles, configured the forest, verified all services running.
 
-**Commands used:**
 ```powershell
-# Verify AD DS installation
-Get-WindowsFeature AD-Domain-Services
-
-# Verify domain controller
+# Verified domain info post-deployment
+Get-ADDomain
 Get-ADDomainController
-
-# Check DNS zones
-Get-DnsServerZone
 ```
 
-### Phase 2 — Build Organizational Unit Structure
+**Screenshot 1 — Domain info confirmed:**
 
-Design an OU structure that reflects a small business:
+![Domain Info](../../SCREENSHOTS/ad-lab-01-domain-info.png)
+
+---
+
+### Organizational Unit Structure
+
+Built a department-based OU structure to mirror a real business:
 
 ```
-corp.local
-├── IT
-│   ├── Computers
-│   └── Users
-├── HR
-│   ├── Computers
-│   └── Users
-├── Finance
-│   ├── Computers
-│   └── Users
-├── Management
-│   └── Users
-└── ServiceAccounts
+axiom.local
+├── Domain Controllers
+├── Departments
+│   ├── IT
+│   ├── HR
+│   ├── Finance
+│   └── Operations
+├── Service Accounts
+├── Disabled Users
+└── Domain Computers
 ```
 
-Create OUs using ADUC or PowerShell:
+Created 10 test users across departments with realistic names and roles.
+
+**Screenshot 2 — OU structure and user accounts:**
+
+![OUs and Users](../../SCREENSHOTS/ad-lab-02-ous-and-users.png)
+
+---
+
+### Security Groups
+
+Created role-based security groups and assigned users. Groups include:
+- `IT Admins` — full domain-level admin access
+- `Domain Users` — all user accounts
+- `Domain Admins` — full control of the domain
+- `Domain Computers` — all domain-joined machines
+- `DNS Admins` — DNS zone management
+
 ```powershell
-New-ADOrganizationalUnit -Name "IT" -Path "DC=corp,DC=local"
-New-ADOrganizationalUnit -Name "Users" -Path "OU=IT,DC=corp,DC=local"
-New-ADOrganizationalUnit -Name "Computers" -Path "OU=IT,DC=corp,DC=local"
-# Repeat for HR, Finance, Management, ServiceAccounts
+# Verified group membership
+Get-ADGroup -Filter * | Select-Object Name, GroupScope
+Get-ADGroupMember -Identity "IT Admins"
 ```
 
-### Phase 3 — Create User Accounts
+**Screenshot 3 — Security groups and membership:**
 
-Create at least 10 test users across departments:
+![Security Groups](../../SCREENSHOTS/ad-lab-03-security-groups.png)
 
-```powershell
-New-ADUser `
-  -Name "Jane Smith" `
-  -GivenName "Jane" `
-  -Surname "Smith" `
-  -SamAccountName "jsmith" `
-  -UserPrincipalName "jsmith@corp.local" `
-  -Path "OU=Users,OU=HR,DC=corp,DC=local" `
-  -AccountPassword (ConvertTo-SecureString "P@ssw0rd123!" -AsPlainText -Force) `
-  -Enabled $true
-```
+---
 
-Create security groups and add users:
-```powershell
-New-ADGroup -Name "IT-Staff" -GroupScope Global -Path "OU=IT,DC=corp,DC=local"
-Add-ADGroupMember -Identity "IT-Staff" -Members "jdoe"
-```
+### Group Policy Objects
 
-### Phase 4 — Configure Group Policy
+Configured 5 baseline GPOs covering password policy, account lockout, audit logging, and USB restriction:
 
-Apply the following baseline GPOs:
+| GPO | Policy Applied |
+|---|---|
+| Default Domain Policy | Password: 12+ chars, complexity, history |
+| Default Domain Controllers Policy | Applied to DC |
+| Password Lockout Policy | 5 failed attempts = 30-minute lockout, 30-minute observation |
+| Audit & Event Policy | Login/logoff, account management, policy changes |
+| USB Restriction | Blocks removable storage on domain workstations |
 
-| GPO Name | Scope | Setting |
+**Screenshot 4 — GPO configuration:**
+
+![Group Policies](../../SCREENSHOTS/ad-lab-04-group-policies.png)
+
+---
+
+### DNS Configuration
+
+DNS is AD-integrated, running on `AXIOM-POLARIS`. Forward and reverse lookup zones configured. DNS records verified for domain resolution.
+
+| Zone | Type | Status |
 |---|---|---|
-| Desktop Lockout | Domain | Lock screen after 10 minutes |
-| Password Policy | Domain | Min 12 chars, complexity required, 90-day expiry |
-| Disable USB Storage | IT Computers | Removable storage — deny write access |
-| Map Network Drive | All Users | Map \\DC01\shared to Z: |
-| Restrict Control Panel | HR, Finance | Prevent access to Control Panel |
+| axiom.local | Primary (AD-integrated) | File-backed |
+| 8.in-addr.arpa | Primary | File-backed |
+| b.in-addr.arpa | Primary | File-backed |
 
-```powershell
-# Create and link a GPO
-New-GPO -Name "Baseline-Password-Policy" | New-GPLink -Target "DC=corp,DC=local"
+Dynamic updates enabled. Scavenging not configured (noted for future hardening).
 
-# Force GPO refresh on client
-gpupdate /force
-```
+**Screenshot 5 — DNS zones and records:**
 
-### Phase 5 — Join Client and Verify
-
-1. Join Windows 10 VM to `corp.local`
-2. Log in with a domain user account
-3. Verify GPOs are applying: `gpresult /r`
-4. Verify drive mapping is working
-5. Test account lockout by entering wrong password 5 times
-6. Unlock account from DC: `Unlock-ADAccount -Identity "jsmith"`
-
----
-
-## Evidence to Collect
-
-- [ ] Screenshot: AD DS role installed in Server Manager
-- [ ] Screenshot: OU structure in ADUC
-- [ ] Screenshot: User account properties (without password visible)
-- [ ] Screenshot: GPO linked to domain in GPMC
-- [ ] Screenshot: `gpresult /r` output on client VM
-- [ ] Screenshot: Client VM joined to domain (System Properties → domain name shown)
-- [ ] Screenshot: Locked account in ADUC and unlock process
-- [ ] Screenshot: Shared drive mapped on client
-
----
-
-## Screenshot Naming Convention
-
-```
-ad-lab-01-adcs-role-installed.png
-ad-lab-02-ou-structure.png
-ad-lab-03-user-account-properties.png
-ad-lab-04-gpo-linked.png
-ad-lab-05-gpresult-output.png
-ad-lab-06-domain-join-confirmed.png
-ad-lab-07-account-unlock.png
-ad-lab-08-drive-mapped.png
-```
+![DNS Configuration](../../SCREENSHOTS/ad-lab-05-dns-zones.png)
 
 ---
 
 ## Interview Talking Points
 
 **"Tell me about your experience with Active Directory."**
-> I deployed a full AD environment in my homelab — stood up a Windows Server 2022 domain controller, built an OU structure for a simulated small company, created user accounts and security groups using both ADUC and PowerShell, and applied Group Policy for password policy, screen lock, and drive mapping. I also walked through common support tasks like account unlocks, password resets, and troubleshooting GPO application using gpresult.
+> I deployed a full AD environment in my homelab — stood up Windows Server 2025 as a domain controller for axiom.local, built an OU structure mirroring a small business, created user accounts and security groups using PowerShell, and configured Group Policy baselines for password policy, account lockout, audit logging, and USB restriction. I also configured AD-integrated DNS and verified zone records. I can walk through any of those steps in detail.
 
 **"How do you reset a user's password in AD?"**
 > In ADUC, right-click the user → Reset Password. In PowerShell: `Set-ADAccountPassword -Identity "jsmith" -Reset -NewPassword (Read-Host -AsSecureString)` then `Set-ADUser -Identity "jsmith" -ChangePasswordAtLogon $true` to force a change at next login.
 
 **"What's the difference between a Security Group and a Distribution Group?"**
-> Security groups are used for access control — assigning permissions to files, folders, or GPOs. Distribution groups are used for email only — they can't be used to assign permissions.
+> Security groups are used for access control — assigning permissions to files, folders, or GPOs. Distribution groups are email-only — you can't use them to assign permissions.
+
+**"What does a GPO do and how do you verify it's applied?"**
+> A Group Policy Object defines configuration settings — password rules, software restrictions, drive mappings, security settings — and applies them to OUs, users, or computers. You verify it's applied on the target machine with `gpresult /r` or `gpresult /h report.html` for a full HTML report. You can also force an immediate refresh with `gpupdate /force`.
 
 ---
 
-## Beginner Mistakes to Avoid
+## Lessons Learned
 
-- Forgetting to set a static IP on the DC before promotion (DHCP will cause DNS issues)
-- Not linking GPOs to the correct scope — creating a GPO and linking it to the domain vs. a specific OU has very different effects
-- Forgetting `gpupdate /force` when testing GPO changes — the client won't pick up new settings automatically
-- Creating users in the default `Users` container instead of OUs — makes administration harder
+- AD-integrated DNS simplifies zone management but means DNS goes down if the DC goes down — important to have a secondary DC in production
+- GPO scope matters more than people expect — linking to the wrong OU or forgetting inheritance means settings don't apply where you think they do
+- Always verify with `gpresult` after making GPO changes — the console showing "applied" doesn't mean the client got it yet
 
 ---
 
 ## What This Proves to an Employer
 
-- You understand Active Directory architecture and can deploy it from scratch
-- You can perform the most common daily AD tasks: user creation, password reset, account unlock, group membership
-- You know how Group Policy works and can configure and troubleshoot GPO application
-- You can use PowerShell for AD administration — not just the GUI
-- You understand domain join and can troubleshoot client-to-domain connectivity
+- Deployed and configured Active Directory from scratch including AD DS, DNS, OUs, users, groups, and GPO
+- Used PowerShell for all verification and administration — not just the GUI
+- Built a department-based OU structure that mirrors real business environments
+- Configured security baselines: password policy, account lockout, audit logging, USB restriction
+- Understands DNS integration with AD and can verify zone health

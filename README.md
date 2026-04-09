@@ -28,7 +28,7 @@ A hands-on technical portfolio built through real homelab work. Every project in
 
 | # | Project | Track | Status |
 |---|---|---|---|
-| 1 | [Active Directory Home Lab](IT_SUPPORT_LABS/01-active-directory-lab/) | IT Support / SysAdmin | 🔧 In Progress |
+| 1 | [Active Directory Home Lab](IT_SUPPORT_LABS/01-active-directory-lab/) | IT Support / SysAdmin | ✅ Complete |
 | 2 | [Windows Troubleshooting Lab](IT_SUPPORT_LABS/02-windows-troubleshooting-lab/) | IT Support / Help Desk | 🔧 In Progress |
 | 3 | [Wazuh SIEM Setup & Alert Investigation](SOC_LABS/01-wazuh-siem-setup/) | SOC / Defensive Security | 🔧 In Progress |
 | 4 | [Brute Force Detection Scenario](SOC_LABS/03-brute-force-detection/) | SOC / Defensive Security | 📋 Planned |

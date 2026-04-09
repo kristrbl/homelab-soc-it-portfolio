@@ -10,7 +10,7 @@ Live tracker for all portfolio projects. Updated as labs are completed.
 
 | # | Project | Status | Notes |
 |---|---|---|---|
-| 01 | Active Directory Home Lab | 🔧 In Progress | DC deployed, building OU structure |
+| 01 | Active Directory Home Lab | ✅ Complete | DC, OUs, users, security groups, 5 GPOs, DNS — all documented with screenshots |
 | 02 | Windows Troubleshooting Lab | 📋 Planned | — |
 | 03 | User Account Provisioning Workflow | 📋 Planned | Will extend AD lab |
 | 04 | Help Desk Ticketing Simulation (osTicket) | 📋 Planned | — |
